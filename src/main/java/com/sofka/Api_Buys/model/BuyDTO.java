@@ -2,18 +2,23 @@ package com.sofka.Api_Buys.model;
 
 import com.sofka.Api_Buys.collection.Product;
 
+import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 public class BuyDTO {
 
     private String id;
 
+    @NotBlank
     private String date;
 
+    @NotBlank
     private String idType;
 
+    @NotBlank
     private String idClient;
 
+    @NotBlank
     private String clientName;
 
     private List<Product> products;

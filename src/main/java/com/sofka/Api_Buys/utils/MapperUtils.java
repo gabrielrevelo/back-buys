@@ -1,4 +1,4 @@
-package com.sofka.Api_Buys.routers;
+package com.sofka.Api_Buys.utils;
 
 import com.sofka.Api_Buys.collection.Buy;
 import com.sofka.Api_Buys.model.BuyDTO;
@@ -20,5 +20,16 @@ public class MapperUtils {
             buy.setProducts(updateBuy.getProducts());
             return buy;
         };
+    }
+
+    public Function<Buy, BuyDTO> mapEntityToBuy() {
+        return entity -> new BuyDTO(
+                entity.getId(),
+                entity.getDate(),
+                entity.getIdType(),
+                entity.getIdClient(),
+                entity.getClientName(),
+                entity.getProducts()
+        );
     }
 }

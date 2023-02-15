@@ -1,9 +1,21 @@
 package com.sofka.Api_Buys.routers;
 
 import com.sofka.Api_Buys.model.BuyDTO;
+import com.sofka.Api_Buys.useCases.CreateUseCase;
+import com.sofka.Api_Buys.useCases.ListUseCase;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import org.springdoc.core.annotations.RouterOperation;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.ServerResponse;
@@ -13,8 +25,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.function.Function;
 
-import static org.springframework.web.reactive.function.server.RequestPredicates.POST;
-import static org.springframework.web.reactive.function.server.RequestPredicates.accept;
+import static org.springframework.web.reactive.function.server.RequestPredicates.*;
 import static org.springframework.web.reactive.function.server.RouterFunctions.route;
 
 @Configuration
@@ -25,11 +36,34 @@ public class BuyRouter {
     WebClient.Builder builder = WebClient.builder();
 
     @Bean
+    @RouterOperation(
+            path = "/create",
+            produces = {
+                    MediaType.APPLICATION_JSON_VALUE
+            },
+            method = RequestMethod.POST,
+            beanClass = CreateUseCase.class,
+            beanMethod = "apply",
+            operation = @Operation(
+                    operationId = "apply",
+                    responses = {
+                            @ApiResponse(
+                                    responseCode = "200",
+                                    description = "Producto creado",
+                                    content = @Content(schema = @Schema(
+                                            implementation = ProductDTO.class
+                                    )
+                                    )
+                            )
+                    }
+            )
+    )
     public RouterFunction<ServerResponse> create(CreateUseCase createUseCase) {
         Function<BuyDTO, Mono<ServerResponse>> executor = buyDTO ->
                 Mono.just(buyDTO.getProducts())
                         .flatMapIterable(productToBuy -> productToBuy)
                         .flatMap(productToBuy ->
+                                // WebClient
                                 builder.build()
                                         .get()
                                         .uri(url + "/get/" + productToBuy.getIdProduct())
@@ -79,8 +113,44 @@ public class BuyRouter {
         );
     }
 
+    @Bean
+    @RouterOperation(
+            path = "/list",
+            produces = {
+                    MediaType.APPLICATION_JSON_VALUE
+            },
+            method = RequestMethod.GET,
+            beanClass = ListUseCase.class,
+            beanMethod = "get",
+            operation = @Operation(
+                    operationId = "get",
+                    responses = {
+                            @ApiResponse(
+                                    responseCode = "200",
+                                    description = "Lista de productos",
+                                    content = @Content(array =
+                                    @ArraySchema(schema = @Schema(
+                                            implementation = BuyDTO.class)
+                                    )
+                                    )
+                            )
+                    }
+            )
+    )
+    public RouterFunction<ServerResponse> getAll(ListUseCase listUseCase) {
+        return route(GET("/list"),
+                request -> ServerResponse.ok()
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .body(BodyInserters.fromPublisher(listUseCase.get(), BuyDTO.class))
+        );
+    }
 
 }
+
+
+
+
+
 
 class ProductDTO {
 
