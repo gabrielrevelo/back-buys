@@ -1,6 +1,6 @@
 package com.sofka.Api_Buys.useCases;
 
-import com.sofka.Api_Buys.collection.Buy;
+import com.sofka.Api_Buys.model.Buy;
 import com.sofka.Api_Buys.model.BuyDTO;
 import com.sofka.Api_Buys.repository.BuyRepository;
 import com.sofka.Api_Buys.utils.MapperUtils;

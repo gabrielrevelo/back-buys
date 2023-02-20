@@ -1,4 +1,4 @@
-package com.sofka.Api_Buys.collection;
+package com.sofka.Api_Buys.model;
 
 public class Product {
     private String idProduct;

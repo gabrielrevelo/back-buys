@@ -1,7 +1,5 @@
 package com.sofka.Api_Buys.model;
 
-import com.sofka.Api_Buys.collection.Product;
-
 import javax.validation.constraints.NotBlank;
 import java.util.List;
 

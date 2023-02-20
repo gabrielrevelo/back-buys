@@ -1,4 +1,4 @@
-package com.sofka.Api_Buys.collection;
+package com.sofka.Api_Buys.model;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
