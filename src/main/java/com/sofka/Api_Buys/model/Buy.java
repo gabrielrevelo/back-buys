@@ -19,14 +19,17 @@ public class Buy {
 
     private String clientName;
 
+    private String username;
+
     private List<Product> products;
 
-    public Buy(String id, String date, String idType, String idClient, String clientName, List<Product> products) {
+    public Buy(String id, String date, String idType, String idClient, String clientName, String username,List<Product> products) {
         this.id = id;
         this.date = date;
         this.idType = idType;
         this.idClient = idClient;
         this.clientName = clientName;
+        this.username = username;
         this.products = products;
     }
 
@@ -79,5 +82,13 @@ public class Buy {
 
     public void setProducts(List<Product> products) {
         this.products = products;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 }

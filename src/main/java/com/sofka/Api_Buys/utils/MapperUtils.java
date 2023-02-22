@@ -17,6 +17,7 @@ public class MapperUtils {
             buy.setIdType(updateBuy.getIdType());
             buy.setIdClient(updateBuy.getIdClient());
             buy.setClientName(updateBuy.getClientName());
+            buy.setUsername(updateBuy.getUsername());
             buy.setProducts(updateBuy.getProducts());
             return buy;
         };
@@ -29,6 +30,7 @@ public class MapperUtils {
                 entity.getIdType(),
                 entity.getIdClient(),
                 entity.getClientName(),
+                entity.getUsername(),
                 entity.getProducts()
         );
     }
